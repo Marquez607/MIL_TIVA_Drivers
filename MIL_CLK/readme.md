@@ -5,7 +5,7 @@ Desc: This includes functions to configure the system clock \
 
 Reason for existence: \
 In effect, the default example code in for 
-TivaWare has this section of code. 
+TivaWare has this section of code. \
 
 '''
    //set system clock to 16MHZ
