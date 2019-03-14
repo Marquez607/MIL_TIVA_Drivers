@@ -7,13 +7,13 @@ Reason for existence: \
 In effect, the default example code in for 
 TivaWare has this section of code. \
 
-'''
+```
     SysCtlClockSet(SYSCTL_SYSDIV_1 |
                    SYSCTL_USE_OSC  |
                    SYSCTL_OSC_MAIN |
                    SYSCTL_XTAL_16MHZ);
 
-'''
+```
 
 IF YOU SEE THIS I,MMEDIATELY REMOVE IT.
 THIS CODE REQUIRES AN EXTERNAL OSCILLATOR AND 
