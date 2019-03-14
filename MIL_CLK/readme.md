@@ -6,6 +6,7 @@ Desc: This includes functions to configure the system clock \
 Reason for existence: \
 In effect, the default example code in for 
 TivaWare has this section of code. 
+
 '''
    //set system clock to 16MHZ
     SysCtlClockSet(SYSCTL_SYSDIV_1 |
@@ -14,6 +15,7 @@ TivaWare has this section of code.
                    SYSCTL_XTAL_16MHZ);
 
 '''
+
 IF YOU SEE THIS I,MMEDIATELY REMOVE IT.
 THIS CODE REQUIRES AN EXTERNAL OSCILLATOR AND 
 WILL CAUSE THE CORE TO LOCK UP. 
