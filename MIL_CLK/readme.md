@@ -8,7 +8,6 @@ In effect, the default example code in for
 TivaWare has this section of code. \
 
 '''
-   //set system clock to 16MHZ
     SysCtlClockSet(SYSCTL_SYSDIV_1 |
                    SYSCTL_USE_OSC  |
                    SYSCTL_OSC_MAIN |
