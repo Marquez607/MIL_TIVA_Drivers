@@ -29,3 +29,5 @@ USE THIS FUNCTION AT THE BEGINNING OF YOUR MAIN
 
 ```
 
+In case of core lockup follow the unlocking section of the JTAG Interface manual(section 5.3.1) of the spma075 manual.
+
