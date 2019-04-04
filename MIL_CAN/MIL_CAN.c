@@ -1,7 +1,7 @@
 /*
  * Name: MIL_CAN.c
  * Author: Marquez Jones
- * Date Modified: 1/16/19
+ * Date Modified: 3/23/2019
  * Desc: A set of wrapper functions I designed
  *       to standardized CAN use in the Lab
  *       this primarily is to reduce the number
@@ -207,6 +207,90 @@ void MIL_CANSimpleTX(uint32_t canid,uint8_t *pMsg,uint8_t MsgLen,uint32_t base){
 
 }
 
+/*
+ * Desc: after configureing your mailbox struct
+ *       pass it into this function in order to
+ *       intialize reception
+ *
+ * Parameters:
+ * pmailbox - a pointer to your mailbox
+ */
+void MIL_InitMailBox(MIL_CAN_MailBox_t *pmailbox){
+
+    //basically copy mailbox parameters to TI CAN object
+    pmailbox->msg_obj.ui32MsgID = pmailbox->canid;
+    pmailbox->msg_obj.ui32MsgIDMask = pmailbox->filt_mask;
+
+    //check for rx_flag_int
+    if(pmailbox->rx_flag_int){
+        pmailbox->msg_obj.ui32Flags = MSG_OBJ_RX_INT_ENABLE | MSG_OBJ_USE_ID_FILTER;
+    }
+    else{
+        pmailbox->msg_obj.ui32Flags = MSG_OBJ_USE_ID_FILTER;
+    }
+    pmailbox->msg_obj.ui32MsgLen = pmailbox->msg_len;
+
+    CANMessageSet(pmailbox->base, pmailbox->obj_num, &pmailbox->msg_obj, MSG_OBJ_TYPE_RX);
+}
+
+/*
+ * Desc: if there is mail to be received
+ *       this function will return that data
+ *       to your buffer(pdata) this function
+ *       will check if there is data but will
+ *       not wait for new data
+ *
+ *       If there is data, it will return MIL_CAN_OK
+ *       otherwise it will return MIL_CAN_NOK
+ *
+ * Parameters:
+ * pmailbox - a pointer to your mailbox object struct
+ * pdata - a pointer to your data buffer(an array)
+ *
+ * Returns:
+ * mil_can_status_t - MIL_CAN_OK if there was new data
+ *                    MIL_CAN_NOK if there is no data
+ */
+mil_can_status_t MIL_CAN_GetMail(uint8_t *pdata, MIL_CAN_MailBox_t *pmailbox){
+
+    uint8_t ptemp[pmailbox->msg_len];
+    pmailbox->msg_obj.pui8MsgData =  ptemp;
+
+	//bitmasking your CAN object flag
+    if(CANStatusGet(pmailbox->base,CAN_STS_NEWDAT) & 0x01<<(pmailbox->obj_num-1)){
+
+        for(uint8_t i = 0;i < pmailbox->msg_len;i++){
+
+            pdata[i] = ptemp[i];
+
+        }
+
+        return MIL_CAN_OK;
+    }
+
+    else{
+
+        return MIL_CAN_NOK;
+
+    }
+
+}
+/*
+ * Desc: Will return MIL_CAN_OK for new data
+ *       or MIL_CAN_NOK if there is no data
+ *
+ * Paramters:
+ * pmailbox - a pointer to your initialized mailbox
+ *
+ * Returns:
+ * a mil_can_status_t depending on whether or not there's data
+ */
+mil_can_status_t MIL_CAN_CheckMail(MIL_CAN_MailBox_t *pmailbox){
+
+    if(CANStatusGet(pmailbox->base,CAN_STS_NEWDAT) & 0x01 << (pmailbox->obj_num-1)){return MIL_CAN_OK;}
+    else{return MIL_CAN_NOK;}
+
+}
 
 
 
