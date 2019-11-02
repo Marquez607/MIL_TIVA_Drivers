@@ -1,15 +1,16 @@
 /*
- * Name: MIL_CAN.h
- * Author: Marquez Jones
- * Date Modified: 4/20/2019
+ * Name: MIL_CAN.c
+ * Author: Marquez Jones0
+ * Date Modified: 11/2/2019
  * Desc: A set of wrapper functions I designed
  *       to standardized CAN use in the Lab
  *       this primarily is to reduce the number
  *       of bugs caused by the CAN bus
  *
- * Notes: CAN devices should be run at 100k bps
+ * Notes: CAN devices should be run at 200k bps
  *        and PCBs on the network should have on
  *        board termination resistors
+ * BAUD UPDATE: CAN INIT NOW HAS CONFIGURABLE BAUD RATE
  */
 
 #include "driverlib/can.h"
@@ -115,7 +116,7 @@ typedef struct{
  * Inputs: port from mil_port enum
  * Assumes: Port clocks are enabled
  */
-void MIL_InitCAN(mil_can_port_t port,uint32_t base);
+void MIL_InitCAN(mil_can_port_t port,uint32_t base,uint32_t bps);
 
 /*
  * Desc: Enables interrupts on CAN0
