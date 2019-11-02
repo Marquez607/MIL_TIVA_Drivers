@@ -1,15 +1,16 @@
 /*
  * Name: MIL_CAN.c
  * Author: Marquez Jones0
- * Date Modified: 4/20/2019
+ * Date Modified: 11/2/2019
  * Desc: A set of wrapper functions I designed
  *       to standardized CAN use in the Lab
  *       this primarily is to reduce the number
  *       of bugs caused by the CAN bus
  *
- * Notes: CAN devices should be run at 100k bps
+ * Notes: CAN devices should be run at 200k bps
  *        and PCBs on the network should have on
  *        board termination resistors
+ * BAUD UPDATE: CAN INIT NOW HAS CONFIGURABLE BAUD RATE
  */
 
 /* INCLUDES */
@@ -55,7 +56,7 @@
  * base - CAN base(CAN0_BASE or CAN1_BASE) from tivaware
  * Assumes: Port clocks are enabled
  */
-void MIL_InitCAN(mil_can_port_t port,uint32_t base){
+void MIL_InitCAN(mil_can_port_t port,uint32_t base,uint32_t bps){
 
 
     //pin configuration
@@ -109,7 +110,7 @@ void MIL_InitCAN(mil_can_port_t port,uint32_t base){
     CANRetrySet(base,1);
 
     //Set bit rates
-    CANBitRateSet(base, SysCtlClockGet(), 100000);
+    CANBitRateSet(base, SysCtlClockGet(), bps);
 
     //enable CAN
     CANEnable(base);
